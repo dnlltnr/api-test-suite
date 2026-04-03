@@ -22,3 +22,30 @@ def test_create_user_valid(base_url):
     assert data["name"] == "Daniel"
     assert data["email"] == "dan@test.com"
 
+
+@pytest.mark.parametrize("payload", [
+    {"name": "A" * 1000, "email": "long@test.com"},
+    {"name": "()@&()!$&%^.", "email": "special@test.com"},
+    {"name": "Daniel, Eli, Jack, James", "email": "multi@test.com"},
+    {"name": "😈", "email": "emoji@test.com"},
+    {}
+], ids=[
+    "long_name",
+    "special_chars",
+    "multi_name",
+    "emoji",
+    "empty_payload"
+])
+
+def test_create_user_parametrized(base_url, payload):
+
+    response, data = create_user(base_url, payload)
+
+    assert response.status_code == 201
+    assert "id" in data
+
+    if payload:
+        assert data["name"] == payload["name"]
+        assert data["email"] == payload["email"]
+
+
