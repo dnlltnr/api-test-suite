@@ -49,3 +49,14 @@ def test_create_user_parametrized(base_url, payload):
         assert data["email"] == payload["email"]
 
 
+def test_fail(base_url):
+    # Expected: 400 (invalid email type)
+    # Actual: 201 (API does not validate email type)
+
+    response, data = create_user(base_url, {
+        "name": "Daniel",
+        "email": "not-an-email"
+    })
+
+    assert response.status_code == 400
+
