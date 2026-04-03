@@ -60,3 +60,15 @@ def test_fail(base_url):
 
     assert response.status_code == 400
 
+
+def test_get_users(base_url):
+
+    response, data = get_users(base_url)
+
+    assert response.status_code == 200
+    assert isinstance(data, list)
+    assert len(data) > 0
+
+    for user in data:
+        assert "name" in user
+        assert "email" in user
