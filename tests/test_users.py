@@ -9,6 +9,8 @@ def base_url():
 
 
 def test_create_user_valid(base_url):
+    # Test: testing a create user function with valid data
+    # Expected: 201
 
     response, data = create_user(base_url, {
         "name": "Daniel",
@@ -38,10 +40,13 @@ def test_create_user_valid(base_url):
 ])
 
 def test_create_user_parametrized(base_url, payload):
+    # Test: trying to find errors in API with weird name inputs
+    # Expected: 400 (invalid input)
+    # Actual: 201 (API does not validate name input type)
 
     response, data = create_user(base_url, payload)
 
-    assert response.status_code == 201
+    assert response.status_code == 400
     assert "id" in data
 
     if payload:
@@ -62,6 +67,8 @@ def test_fail(base_url):
 
 
 def test_get_users(base_url):
+    # Test: verify data returned from GET request
+    # Expected: 200
 
     response, data = get_users(base_url)
 
@@ -72,3 +79,4 @@ def test_get_users(base_url):
     for user in data:
         assert "name" in user
         assert "email" in user
+
